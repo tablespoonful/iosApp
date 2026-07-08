@@ -15,6 +15,11 @@
   - サポートURL           … 編集可能バージョン（appStoreVersionLocalizations.supportUrl）
 更新するロケールは既定 ja（--locales で変更可）。
 URL は apps.json の site.baseUrl + "/<id>.html"。
+
+制約（重要）: どちらの URL も **編集可能なバージョン（保留中の App バージョン）が存在するときだけ**
+変更できる。配信中（READY_FOR_SALE）のみで保留バージョンが無いアプリは Apple 側でロックされ、
+本スクリプトは 409 を避けてスキップする。→ 次回アップデートの提出準備中に本スクリプトを再実行する。
+（旧URLをリダイレクトで運用しているなら、変更しなくてもリンクは正しいページに到達する）
 """
 import argparse
 import json
@@ -105,7 +110,14 @@ def main() -> None:
         # --- プライバシーポリシーURL: appInfoLocalizations ---
         try:
             infos = get(f"/apps/{app_id}/appInfos")["data"]
-            for info in infos:
+            # 編集可能な appInfo（保留バージョン）だけが privacyPolicyUrl を変更できる。
+            # READY_FOR_SALE（配信中）は API/画面ともロックされ 409 になるためスキップ。
+            editable_infos = [i for i in infos
+                              if (i["attributes"].get("state")
+                                  or i["attributes"].get("appStoreState")) in EDITABLE_STATES]
+            if not editable_infos:
+                print("    （編集可能な App 情報なし → プライバシーURLは次回アップデート時に設定してください）")
+            for info in editable_infos:
                 locs = get(f"/appInfos/{info['id']}/appInfoLocalizations")["data"]
                 for loc in locs:
                     if loc["attributes"]["locale"] in args.locales:
