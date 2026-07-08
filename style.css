@@ -1,31 +1,78 @@
-/* style.css */
+/* Shared styles for the app support site (index + per-app pages). */
+:root {
+  --ink: #2c3e50;
+  --sub: #34495e;
+  --link: #3498db;
+  --muted: #777;
+  --bg: #f4f4f4;
+}
+
+* { box-sizing: border-box; }
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", Arial, sans-serif;
+  line-height: 1.7;
+  color: #333;
+  margin: 0;
+  padding: 0 16px;
+  background-color: var(--bg);
 }
 
+.container {
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 24px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+}
+
+h1, h2 { color: var(--ink); }
 h1 {
-    text-align: center;
-    margin-top: 20px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
 }
+h2 { margin-top: 32px; }
+h3 { margin-top: 20px; color: var(--sub); }
+p { margin: 10px 0; }
+ul { margin: 10px 0 10px 20px; }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.updated { color: var(--muted); font-size: 0.9em; margin-top: 4px; }
+
+/* App list (index) */
+.app-list { list-style: none; padding: 0; }
+.app-list li { margin: 12px 0; }
+.app-list a {
+  display: block;
+  padding: 14px 16px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
 }
+.app-list a:hover { background: #f0f7ff; border-color: var(--link); }
+.app-list .desc { display: block; color: var(--muted); font-weight: 400; font-size: 0.9em; margin-top: 4px; }
 
-li {
-    margin: 10px 0;
-    text-align: center;
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+
+.support-link, .back-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.05em;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: bold;
 }
+.back-link { margin-top: 28px; }
 
-a {
-    text-decoration: none;
-    color: #007BFF;
-}
-
-a:hover {
-    text-decoration: underline;
+.footer {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.9em;
+  color: var(--muted);
 }

@@ -1,0 +1,59 @@
+{
+  "site": {
+    "title": "アプリ サポート / プライバシーポリシー",
+    "developer": "tablespoonful",
+    "supportFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSe-IeyC8aIVGKi6d_SsB1SwglI7JA6oxcWKF_e0qHaJRyACGw/viewform",
+    "updated": "2025-07-08",
+    "year": 2025,
+    "_note": "flags は各アプリの実態に合わせて必ず確認してください（ads は app-ads.txt があるため既定 true）。"
+  },
+  "apps": [
+    {
+      "id": "era-converter",
+      "legacy": "app1",
+      "name": "西暦和暦変換器",
+      "summary": "西暦と日本の元号（明治・大正・昭和・平成・令和）の間で年を簡単に変換できるアプリです。カレンダーからの直感的な選択、触覚フィードバック、記念日メモとリマインダー通知に対応しています。",
+      "features": [],
+      "flags": { "ads": true, "location": false, "photos": false, "notifications": true, "externalApi": false }
+    },
+    {
+      "id": "stop-game",
+      "legacy": "app2",
+      "name": "10秒止めゲーム",
+      "summary": "選択したレベルに応じて 0.01 秒刻みでカウントし、目標時間ぴったりで止めることを目指すシンプルなゲームです。",
+      "features": [
+        "レベル選択（1〜4）",
+        "0.01 秒刻みの精密タイマー",
+        "目標との誤差を結果表示",
+        "記録の保存・共有"
+      ],
+      "flags": { "ads": true, "location": false, "photos": false, "notifications": false, "externalApi": false }
+    },
+    {
+      "id": "dining-search",
+      "legacy": "app3",
+      "name": "外食サーチ",
+      "summary": "現在地周辺の飲食店を地図で検索し、条件で絞り込んで見つけられるアプリです。",
+      "features": [
+        "現在地周辺のレストラン検索",
+        "料理・距離での絞り込み",
+        "店舗の詳細情報・レビュー表示",
+        "お気に入り保存"
+      ],
+      "flags": { "ads": true, "location": true, "photos": false, "notifications": false, "externalApi": true }
+    },
+    {
+      "id": "photo-book",
+      "legacy": "app4",
+      "name": "シンプル写真帳",
+      "summary": "写真をページごとに配置し、コメントを添えて整理・閲覧できるアプリです。作成した写真帳は PDF として書き出せます。",
+      "features": [
+        "端末内の写真を取り込み・保存",
+        "ページ単位の配置とコメント編集",
+        "PDF 書き出し・共有",
+        "シンプルで分かりやすい UI"
+      ],
+      "flags": { "ads": true, "location": false, "photos": true, "notifications": false, "externalApi": false }
+    }
+  ]
+}
