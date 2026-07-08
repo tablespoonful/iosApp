@@ -1,16 +1,19 @@
 {
   "site": {
     "title": "アプリ サポート / プライバシーポリシー",
-    "developer": "tablespoonful",
+    "developer": "Daisuke Minami",
     "supportFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSe-IeyC8aIVGKi6d_SsB1SwglI7JA6oxcWKF_e0qHaJRyACGw/viewform",
+    "baseUrl": "https://tablespoonful.github.io/iosApp",
+    "appStoreDeveloperId": "1762826742",
     "updated": "2025-07-08",
     "year": 2025,
-    "_note": "flags は各アプリの実態に合わせて必ず確認してください（ads は app-ads.txt があるため既定 true）。"
+    "_note": "flags は各アプリの実態に合わせて必ず確認してください（ads は app-ads.txt があるため既定 true）。developer は App Store の販売者名（Daisuke Minami）に一致させています。"
   },
   "apps": [
     {
       "id": "era-converter",
       "legacy": "app1",
+      "appStoreId": "6711329947",
       "name": "西暦和暦変換器",
       "summary": "西暦と日本の元号（明治・大正・昭和・平成・令和）の間で年を簡単に変換できるアプリです。カレンダーからの直感的な選択、触覚フィードバック、記念日メモとリマインダー通知に対応しています。",
       "features": [],
@@ -19,6 +22,7 @@
     {
       "id": "stop-game",
       "legacy": "app2",
+      "appStoreId": "6733242058",
       "name": "10秒止めゲーム",
       "summary": "選択したレベルに応じて 0.01 秒刻みでカウントし、目標時間ぴったりで止めることを目指すシンプルなゲームです。",
       "features": [
@@ -32,6 +36,7 @@
     {
       "id": "dining-search",
       "legacy": "app3",
+      "appStoreId": "6736398611",
       "name": "外食サーチ",
       "summary": "現在地周辺の飲食店を地図で検索し、条件で絞り込んで見つけられるアプリです。",
       "features": [
@@ -45,6 +50,7 @@
     {
       "id": "photo-book",
       "legacy": "app4",
+      "appStoreId": "6739175712",
       "name": "シンプル写真帳",
       "summary": "写真をページごとに配置し、コメントを添えて整理・閲覧できるアプリです。作成した写真帳は PDF として書き出せます。",
       "features": [
