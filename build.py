@@ -48,10 +48,10 @@ def privacy_block(name: str, flags: dict) -> str:
     if firebase:
         collected = ""
         if accounts:
-            collected += "アカウント識別子、メールアドレス、氏名、職種、電話番号、所属グループ情報"
+            collected += "アカウント識別子、メールアドレス、氏名、所属グループ情報"
         if cloud_sync:
             collected += ("、" if collected else "") + "予定、変更依頼、操作履歴"
-        out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Firebase上に保存します。電話番号と職種の入力は任意です。"))
+        out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Firebase上に保存します。"))
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
     else:
         out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
