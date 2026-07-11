@@ -51,14 +51,14 @@ def privacy_block(name: str, flags: dict) -> str:
             collected += "アカウント識別子、メールアドレス、氏名、所属グループ情報"
         if cloud_sync:
             collected += ("、" if collected else "") + "予定、変更依頼、操作履歴"
-        out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Firebase上に保存します。"))
+        out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Googleのクラウドサービス上に保存します。"))
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
     else:
         out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
     if photos:
         out.append(p("写真へのアクセスは、あなたが選択した写真の取り込み・編集のためだけに使用し、端末内で完結します。写真を外部サーバーへ送信することはありません。"))
     if notifications and firebase:
-        out.append(p("変更依頼などのPush通知を配信するため、端末の通知トークンをFirebaseに保存します。通知はアプリ内またはiOSの設定から無効にできます。"))
+        out.append(p("変更依頼などのPush通知を配信するため、端末の通知トークンをGoogleのクラウドサービスに保存します。通知はアプリ内またはiOSの設定から無効にできます。"))
     elif notifications:
         out.append(p("リマインダー等の通知は端末内でスケジュールされ、通知内容が外部に送信されることはありません。"))
     if location:
@@ -67,14 +67,14 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p('店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。当方が独自に検索履歴や位置情報を保存・収集することはありません。'))
 
     if firebase:
-        out.append("    <h3>2. Firebaseの利用</h3>")
-        firebase_text = "認証、クラウド保存、Push通知のためGoogle Firebaseを利用します。"
+        out.append("    <h3>2. Googleのサービス利用</h3>")
+        firebase_text = "認証、クラウド保存、Push通知のためGoogleが提供するサービスを利用します。"
         if crash_reports:
-            firebase_text += "また、不具合調査のためFirebase Crashlyticsへクラッシュ情報と診断情報を送信する場合があります。"
+            firebase_text += "また、不具合調査のためGoogleのクラッシュ解析サービスへクラッシュ情報と診断情報を送信する場合があります。"
         firebase_text += '詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'
         out.append(p(firebase_text))
         out.append("    <h3>3. 利用目的・第三者提供</h3>")
-        out.append(p("収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。法令に基づく場合を除き、Firebase等の業務委託先以外の第三者へ提供しません。"))
+        out.append(p("収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。法令に基づく場合を除き、Google等の業務委託先以外の第三者へ提供しません。"))
         out.append("    <h3>4. 保存期間・削除</h3>")
         out.append(p("設定画面からアカウントを削除できます。アカウント削除時は、法令上または不正防止上保持が必要な情報を除き、関連する個人情報を削除します。グループで共有された情報は、他の利用者の業務記録として保持される場合があります。"))
         out.append("    <h3>5. 安全管理</h3>")
