@@ -60,6 +60,30 @@
         "シンプルで分かりやすい UI"
       ],
       "flags": { "ads": true, "location": false, "photos": true, "notifications": false, "externalApi": false }
+    },
+    {
+      "id": "schedule-manager",
+      "updated": "2026-07-11",
+      "name": "ScheduleManager",
+      "summary": "個人の予定を管理し、必要に応じて工事現場の管理者や同僚とグループ単位で共有できるスケジュールアプリです。",
+      "features": [
+        "日・週・月単位の予定管理",
+        "複数グループの作成・参加・切り替え",
+        "管理者からの変更依頼と作業員による承認・却下",
+        "Firebaseによるクラウド同期とPush通知"
+      ],
+      "flags": {
+        "ads": false,
+        "location": false,
+        "photos": false,
+        "notifications": true,
+        "externalApi": false,
+        "firebase": true,
+        "accounts": true,
+        "cloudSync": true,
+        "crashReports": true,
+        "workCollaboration": true
+      }
     }
   ]
 }

@@ -39,17 +39,49 @@ def privacy_block(name: str, flags: dict) -> str:
     photos = flags.get("photos")
     notifications = flags.get("notifications")
     external = flags.get("externalApi")
+    firebase = flags.get("firebase")
+    accounts = flags.get("accounts")
+    cloud_sync = flags.get("cloudSync")
+    crash_reports = flags.get("crashReports")
 
     out = [p(f"「{esc(name)}」は、以下の方針に基づきユーザーの情報を取り扱います。"), "    <h3>1. 収集・処理する情報</h3>"]
-    out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
+    if firebase:
+        collected = ""
+        if accounts:
+            collected += "アカウント識別子、メールアドレス、氏名、職種、電話番号、所属グループ情報"
+        if cloud_sync:
+            collected += ("、" if collected else "") + "予定、変更依頼、操作履歴"
+        out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Firebase上に保存します。電話番号と職種の入力は任意です。"))
+        out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
+    else:
+        out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
     if photos:
         out.append(p("写真へのアクセスは、あなたが選択した写真の取り込み・編集のためだけに使用し、端末内で完結します。写真を外部サーバーへ送信することはありません。"))
-    if notifications:
+    if notifications and firebase:
+        out.append(p("変更依頼などのPush通知を配信するため、端末の通知トークンをFirebaseに保存します。通知はアプリ内またはiOSの設定から無効にできます。"))
+    elif notifications:
         out.append(p("リマインダー等の通知は端末内でスケジュールされ、通知内容が外部に送信されることはありません。"))
     if location:
         out.append(p("現在地情報は、周辺の検索結果を表示する目的でのみ使用します。"))
     if external:
         out.append(p('店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。当方が独自に検索履歴や位置情報を保存・収集することはありません。'))
+
+    if firebase:
+        out.append("    <h3>2. Firebaseの利用</h3>")
+        firebase_text = "認証、クラウド保存、Push通知のためGoogle Firebaseを利用します。"
+        if crash_reports:
+            firebase_text += "また、不具合調査のためFirebase Crashlyticsへクラッシュ情報と診断情報を送信する場合があります。"
+        firebase_text += '詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'
+        out.append(p(firebase_text))
+        out.append("    <h3>3. 利用目的・第三者提供</h3>")
+        out.append(p("収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。法令に基づく場合を除き、Firebase等の業務委託先以外の第三者へ提供しません。"))
+        out.append("    <h3>4. 保存期間・削除</h3>")
+        out.append(p("設定画面からアカウントを削除できます。アカウント削除時は、法令上または不正防止上保持が必要な情報を除き、関連する個人情報を削除します。グループで共有された情報は、他の利用者の業務記録として保持される場合があります。"))
+        out.append("    <h3>5. 安全管理</h3>")
+        out.append(p("アクセス制御、認証および通信の暗号化など、合理的な安全管理措置を講じます。"))
+        out.append("    <h3>6. プライバシーポリシーの変更</h3>")
+        out.append(p("本ポリシーは必要に応じて改定することがあります。重要な変更はアプリ内または本ページでお知らせします。"))
+        return "\n".join(out)
 
     if ads:
         out.append("    <h3>2. 広告について</h3>")
@@ -82,6 +114,27 @@ TERMS = "\n".join([
     p("本規約は必要に応じて変更されることがあります。変更後の規約は、アプリ内または本ページで通知された時点から効力を生じます。"),
 ])
 
+
+def terms_block(flags: dict) -> str:
+    if not flags.get("workCollaboration"):
+        return TERMS
+    return "\n".join([
+        "    <h3>1. 利用条件</h3>",
+        p("本アプリは個人の予定管理および組織内での予定共有のために提供されます。利用者は正確な情報を登録し、アカウントと招待コードを適切に管理するものとします。"),
+        "    <h3>2. 禁止事項</h3>",
+        p("不正アクセス、第三者へのなりすまし、他の利用者または業務を妨害する行為、法令に違反する利用を禁止します。"),
+        "    <h3>3. 予定情報の位置付け</h3>",
+        p("本アプリの予定および変更依頼は業務上の確認を補助するものです。安全管理、勤怠管理、労務管理その他の正式な手続を代替するものではありません。"),
+        "    <h3>4. 知的財産権</h3>",
+        p("本アプリに関する知的財産権はライセンサーに帰属します。法令で認められる場合を除き、無断での複製・配布・改変を禁止します。"),
+        "    <h3>5. サービスの変更・停止</h3>",
+        p("保守、障害または運用上の必要により、事前の通知なく本アプリの全部または一部を変更・停止する場合があります。"),
+        "    <h3>6. 免責事項</h3>",
+        p("本アプリは現状有姿で提供されます。通信障害、端末故障、誤入力などにより生じた損害について、法令で認められる範囲で責任を負いません。"),
+        "    <h3>7. 規約の変更</h3>",
+        p("本規約は必要に応じて変更することがあります。重要な変更はアプリ内または本ページでお知らせします。"),
+    ])
+
 REDIRECT = """<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -98,11 +151,11 @@ REDIRECT = """<!DOCTYPE html>
 for app in data["apps"]:
     page = (template
             .replace("{{NAME}}", esc(app["name"]))
-            .replace("{{UPDATED}}", esc(site["updated"]))
+            .replace("{{UPDATED}}", esc(app.get("updated", site["updated"])))
             .replace("{{SUMMARY}}", esc(app["summary"]))
             .replace("{{FEATURES}}", features_block(app.get("features", [])))
             .replace("{{PRIVACY}}", privacy_block(app["name"], app.get("flags", {})))
-            .replace("{{TERMS}}", TERMS)
+            .replace("{{TERMS}}", terms_block(app.get("flags", {})))
             .replace("{{SUPPORT_URL}}", esc(site["supportFormUrl"]))
             .replace("{{YEAR}}", str(site["year"]))
             .replace("{{DEVELOPER}}", esc(site["developer"])))
