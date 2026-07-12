@@ -84,6 +84,26 @@
         "crashReports": true,
         "workCollaboration": true
       }
+    },
+    {
+      "id": "jigpicca",
+      "appStoreId": "6790121731",
+      "updated": "2026-07-12",
+      "name": "JigPicca - 写真ジグソーパズル",
+      "summary": "写真やサンプル画像からジグソーパズルを作り、ノーマルモードや回転ピースのハードモード、Game Centerランキングを楽しめるパズルゲームです。",
+      "features": [
+        "9・16・25ピースのジグソーパズル",
+        "ノーマルモードと回転ピースのハードモード",
+        "スコア履歴、実績、今日のパズル",
+        "難易度・ピース数別のGame Center世界ランキング"
+      ],
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": true,
+        "notifications": false,
+        "externalApi": false
+      }
     }
   ]
 }
