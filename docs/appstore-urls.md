@@ -13,7 +13,7 @@
 | 10秒止めゲーム | 6733242058 | https://tablespoonful.github.io/iosApp/stop-game.html |
 | 外食サーチ | 6736398611 | https://tablespoonful.github.io/iosApp/dining-search.html |
 | シンプル写真帳 | 6739175712 | https://tablespoonful.github.io/iosApp/photo-book.html |
-| ScheduleManager | 未登録 | https://tablespoonful.github.io/iosApp/schedule-manager.html |
+| スケマネ | 未登録 | https://tablespoonful.github.io/iosApp/schedule-manager.html |
 
 > ⚠️ **重要な制約**：サポートURL も プライバシーポリシーURL も、**編集可能なバージョン
 > （提出準備中の App バージョン）があるときだけ**変更できます。配信中（READY_FOR_SALE）のみで

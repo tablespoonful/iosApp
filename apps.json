@@ -64,7 +64,7 @@
     {
       "id": "schedule-manager",
       "updated": "2026-07-11",
-      "name": "ScheduleManager",
+      "name": "スケマネ",
       "summary": "個人の予定を管理し、必要に応じて工事現場の管理者や同僚とグループ単位で共有できるスケジュールアプリです。",
       "features": [
         "日・週・月単位の予定管理",
