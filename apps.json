@@ -17,7 +17,13 @@
       "name": "西暦和暦変換器",
       "summary": "西暦と日本の元号（明治・大正・昭和・平成・令和）の間で年を簡単に変換できるアプリです。カレンダーからの直感的な選択、触覚フィードバック、記念日メモとリマインダー通知に対応しています。",
       "features": [],
-      "flags": { "ads": true, "location": false, "photos": false, "notifications": true, "externalApi": false }
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": false,
+        "notifications": true,
+        "externalApi": false
+      }
     },
     {
       "id": "stop-game",
@@ -31,7 +37,13 @@
         "目標との誤差を結果表示",
         "記録の保存・共有"
       ],
-      "flags": { "ads": true, "location": false, "photos": false, "notifications": false, "externalApi": false }
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": false,
+        "notifications": false,
+        "externalApi": false
+      }
     },
     {
       "id": "dining-search",
@@ -45,7 +57,13 @@
         "店舗の詳細情報・レビュー表示",
         "お気に入り保存"
       ],
-      "flags": { "ads": true, "location": true, "photos": false, "notifications": false, "externalApi": true }
+      "flags": {
+        "ads": true,
+        "location": true,
+        "photos": false,
+        "notifications": false,
+        "externalApi": true
+      }
     },
     {
       "id": "photo-book",
@@ -59,7 +77,13 @@
         "PDF 書き出し・共有",
         "シンプルで分かりやすい UI"
       ],
-      "flags": { "ads": true, "location": false, "photos": true, "notifications": false, "externalApi": false }
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": true,
+        "notifications": false,
+        "externalApi": false
+      }
     },
     {
       "id": "schedule-manager",
@@ -102,6 +126,25 @@
         "location": false,
         "photos": true,
         "notifications": false,
+        "externalApi": false
+      }
+    },
+    {
+      "id": "habiroku",
+      "updated": "2026-07-16",
+      "name": "ハビロク",
+      "summary": "毎日の習慣を1タップで記録し、ストリーク（連続日数）や週間サマリー・月間ヒートマップで継続を確認できる習慣トラッカーです。アカウント登録は不要で、記録データは端末内にのみ保存されます。",
+      "features": [
+        "習慣の登録（色・毎日/曜日の頻度・リマインダー）",
+        "今日の習慣を1タップでチェック、当日の取り消しにも対応",
+        "ストリーク・達成率・月間ヒートマップで継続を可視化",
+        "習慣ごとのリマインダー通知（端末内のローカル通知）"
+      ],
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": false,
+        "notifications": true,
         "externalApi": false
       }
     }
