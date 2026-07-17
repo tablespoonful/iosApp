@@ -85,7 +85,7 @@ def privacy_block(name: str, flags: dict) -> str:
 
     if ads:
         out.append("    <h3>2. 広告について</h3>")
-        out.append(p('本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子（IDFA 等）や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。トラッキングの許可は iOS の設定（App Tracking Transparency）から管理できます。'))
+        out.append(p('本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子（IDFA 等）や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
         third = "    <h3>3. 第三者への提供</h3>"
         third_body = "上記の広告事業者（Google）および地図サービスの提供元（Apple）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。" if external \
             else "上記の広告事業者（Google）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。"
