@@ -43,6 +43,7 @@ def privacy_block(name: str, flags: dict) -> str:
     accounts = flags.get("accounts")
     cloud_sync = flags.get("cloudSync")
     crash_reports = flags.get("crashReports")
+    analytics = flags.get("analytics")
 
     out = [p(f"「{esc(name)}」は、以下の方針に基づきユーザーの情報を取り扱います。"), "    <h3>1. 収集・処理する情報</h3>"]
     if firebase:
@@ -54,7 +55,11 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Googleのクラウドサービス上に保存します。"))
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
     else:
-        out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
+        if analytics:
+            out.append(p("本アプリの主要な機能は端末内で完結し、記録・進捗などのデータは端末内にのみ保存されます。当方が氏名やメールアドレス等、個人を特定できる情報をサーバーに収集・保存することはありません。"))
+            out.append(p('品質改善のため、Google Firebase（Analytics / Crashlytics）を利用し、匿名の利用状況（画面表示・操作イベント）、クラッシュ情報、およびデバイス識別子を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
+        else:
+            out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
     if photos:
         out.append(p("写真へのアクセスは、あなたが選択した写真の取り込み・編集のためだけに使用し、端末内で完結します。写真を外部サーバーへ送信することはありません。"))
     if notifications and firebase:
@@ -87,8 +92,9 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append("    <h3>2. 広告について</h3>")
         out.append(p('本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子（IDFA 等）や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
         third = "    <h3>3. 第三者への提供</h3>"
-        third_body = "上記の広告事業者（Google）および地図サービスの提供元（Apple）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。" if external \
-            else "上記の広告事業者（Google）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。"
+        _google_role = "広告事業者・分析サービスの提供元（Google）" if analytics else "広告事業者（Google）"
+        third_body = f"上記の{_google_role}および地図サービスの提供元（Apple）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。" if external \
+            else f"上記の{_google_role}を除き、当方がユーザーの個人情報を第三者へ提供することはありません。"
         change_h = "    <h3>4. プライバシーポリシーの変更</h3>"
     else:
         third = "    <h3>2. 第三者への提供</h3>"

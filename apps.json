@@ -145,7 +145,8 @@
     "location": false,
     "photos": false,
     "notifications": true,
-    "externalApi": false
+    "externalApi": false,
+    "analytics": true
    }
   },
   {
@@ -164,7 +165,8 @@
     "location": false,
     "photos": false,
     "notifications": false,
-    "externalApi": false
+    "externalApi": false,
+    "analytics": true
    }
   }
  ]
