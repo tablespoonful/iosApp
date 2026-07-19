@@ -1,208 +1,228 @@
 {
-  "site": {
-    "title": "アプリ サポート / プライバシーポリシー",
-    "developer": "Daisuke Minami",
-    "supportFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSe-IeyC8aIVGKi6d_SsB1SwglI7JA6oxcWKF_e0qHaJRyACGw/viewform",
-    "baseUrl": "https://tablespoonful.github.io/iosApp",
-    "appStoreDeveloperId": "1762826742",
-    "updated": "2025-07-08",
-    "year": 2025,
-    "_note": "flags は各アプリの実態に合わせて必ず確認してください（ads は app-ads.txt があるため既定 true）。developer は App Store の販売者名（Daisuke Minami）に一致させています。"
+ "site": {
+  "title": "アプリ サポート / プライバシーポリシー",
+  "developer": "Daisuke Minami",
+  "supportFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSe-IeyC8aIVGKi6d_SsB1SwglI7JA6oxcWKF_e0qHaJRyACGw/viewform",
+  "baseUrl": "https://tablespoonful.github.io/iosApp",
+  "appStoreDeveloperId": "1762826742",
+  "updated": "2025-07-08",
+  "year": 2025,
+  "_note": "flags は各アプリの実態に合わせて必ず確認してください（ads は app-ads.txt があるため既定 true）。developer は App Store の販売者名（Daisuke Minami）に一致させています。"
+ },
+ "apps": [
+  {
+   "id": "era-converter",
+   "legacy": "app1",
+   "appStoreId": "6711329947",
+   "name": "西暦和暦変換器",
+   "summary": "西暦と日本の元号（明治・大正・昭和・平成・令和）の間で年を簡単に変換できるアプリです。カレンダーからの直感的な選択、触覚フィードバック、記念日メモとリマインダー通知に対応しています。",
+   "features": [],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": false,
+    "notifications": true,
+    "externalApi": false
+   }
   },
-  "apps": [
-    {
-      "id": "era-converter",
-      "legacy": "app1",
-      "appStoreId": "6711329947",
-      "name": "西暦和暦変換器",
-      "summary": "西暦と日本の元号（明治・大正・昭和・平成・令和）の間で年を簡単に変換できるアプリです。カレンダーからの直感的な選択、触覚フィードバック、記念日メモとリマインダー通知に対応しています。",
-      "features": [],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": false,
-        "notifications": true,
-        "externalApi": false
-      }
-    },
-    {
-      "id": "stop-game",
-      "legacy": "app2",
-      "appStoreId": "6733242058",
-      "name": "10秒止めゲーム",
-      "summary": "選択したレベルに応じて 0.01 秒刻みでカウントし、目標時間ぴったりで止めることを目指すシンプルなゲームです。",
-      "features": [
-        "レベル選択（1〜4）",
-        "0.01 秒刻みの精密タイマー",
-        "目標との誤差を結果表示",
-        "記録の保存・共有"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": false,
-        "notifications": false,
-        "externalApi": false
-      }
-    },
-    {
-      "id": "dining-search",
-      "legacy": "app3",
-      "appStoreId": "6736398611",
-      "name": "外食サーチ",
-      "summary": "現在地周辺の飲食店を地図で検索し、条件で絞り込んで見つけられるアプリです。",
-      "features": [
-        "現在地周辺のレストラン検索",
-        "料理・距離での絞り込み",
-        "店舗の詳細情報・レビュー表示",
-        "お気に入り保存"
-      ],
-      "flags": {
-        "ads": true,
-        "location": true,
-        "photos": false,
-        "notifications": false,
-        "externalApi": true
-      }
-    },
-    {
-      "id": "photo-book",
-      "legacy": "app4",
-      "appStoreId": "6739175712",
-      "name": "シンプル写真帳",
-      "summary": "写真をページごとに配置し、コメントを添えて整理・閲覧できるアプリです。作成した写真帳は PDF として書き出せます。",
-      "features": [
-        "端末内の写真を取り込み・保存",
-        "ページ単位の配置とコメント編集",
-        "PDF 書き出し・共有",
-        "シンプルで分かりやすい UI"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": true,
-        "notifications": false,
-        "externalApi": false
-      }
-    },
-    {
-      "id": "schedule-manager",
-      "updated": "2026-07-11",
-      "name": "スケマネ",
-      "summary": "個人の予定を管理し、必要に応じて工事現場の管理者や同僚とグループ単位で共有できるスケジュールアプリです。",
-      "features": [
-        "日・週・月単位の予定管理",
-        "複数グループの作成・参加・切り替え",
-        "管理者からの変更依頼と作業員による承認・却下",
-        "Googleによるクラウド同期とPush通知"
-      ],
-      "flags": {
-        "ads": false,
-        "location": false,
-        "photos": false,
-        "notifications": true,
-        "externalApi": false,
-        "firebase": true,
-        "accounts": true,
-        "cloudSync": true,
-        "crashReports": true,
-        "workCollaboration": true
-      }
-    },
-    {
-      "id": "jigpicca",
-      "appStoreId": "6790121731",
-      "updated": "2026-07-12",
-      "name": "JigPicca - 写真ジグソーパズル",
-      "summary": "写真やサンプル画像からジグソーパズルを作り、ノーマルモードや回転ピースのハードモード、Game Centerランキングを楽しめるパズルゲームです。",
-      "features": [
-        "9・16・25ピースのジグソーパズル",
-        "ノーマルモードと回転ピースのハードモード",
-        "スコア履歴、実績、今日のパズル",
-        "難易度・ピース数別のGame Center世界ランキング"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": true,
-        "notifications": false,
-        "externalApi": false
-      }
-    },
-    {
-      "id": "habiroku",
-      "updated": "2026-07-16",
-      "name": "ハビロク",
-      "summary": "毎日の習慣を1タップで記録し、ストリーク（連続日数）や週間サマリー・月間ヒートマップで継続を確認できる習慣トラッカーです。アカウント登録は不要で、記録データは端末内にのみ保存されます。",
-      "features": [
-        "習慣の登録（色・毎日/曜日の頻度・リマインダー）",
-        "今日の習慣を1タップでチェック、当日の取り消しにも対応",
-        "ストリーク・達成率・月間ヒートマップで継続を可視化",
-        "習慣ごとのリマインダー通知（端末内のローカル通知）"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": false,
-        "notifications": true,
-        "externalApi": false,
-        "analytics": true
-      }
-    },
-    {
-      "id": "chroma-merge",
-      "updated": "2026-07-18",
-      "name": "Chroma Merge",
-      "summary": "見本の色をパレットの絵の具を混ぜて再現する色彩パズルゲームです。100ステージのレシピ探索型パズルで、混ぜるたびに色がリアルタイムに変化し、一致度メーターで見本への近さを確認できます。進捗は端末内にのみ保存され、アカウント登録は不要です。",
-      "features": [
-        "100ステージの色調合パズル（順次解放・オートセーブ）",
-        "リアルタイム混色と一致度メーター、最少滴数クリアで星3評価",
-        "Game Center のランキング（累計スター）と実績に対応",
-        "ヒント機能（リワード動画視聴で1回）"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": false,
-        "notifications": false,
-        "externalApi": false,
-        "analytics": true
-      }
-    },
-    {
-      "id": "qr-toolbox",
-      "updated": "2026-07-18",
-      "name": "QR Toolbox",
-      "summary": "QRコードの読み取り・作成・履歴管理がひとつで完結するツールアプリです。起動するとすぐに読み取りが始まり、カメラのほか写真からの読み取りや1Dバーコードにも対応。URL・テキスト・Wi-Fi情報からのQRコード作成もでき、読み取り・作成の履歴は端末内にのみ保存されます。アカウント登録は不要です。",
-      "features": [
-        "起動即スキャン（カメラ・写真からの読み取り・1Dバーコード・ライト対応）",
-        "URL・テキスト・Wi-FiのQRコード作成（ライブプレビュー・共有・画像保存）",
-        "読み取り・作成の履歴を自動保存（お気に入り・絞り込み・再表示）",
-        "履歴は端末内にのみ保存、アカウント不要"
-      ],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": true,
-        "notifications": false,
-        "externalApi": false,
-        "analytics": true
-      }
-    },
-    {
-      "id": "snap-to-text",
-      "appStoreId": "6792455372",
-      "name": "Snap to Text",
-      "summary": "撮影するか写真を選ぶだけで、画像に写った文字をオンデバイスで読み取り、コピー・翻訳・共有ができるアプリです。すべての処理は端末内で完結し、画像や文字を外部に送信しません。読み取った文字は履歴に保存され、いつでも見返せます。",
-      "features": [],
-      "flags": {
-        "ads": true,
-        "location": false,
-        "photos": true,
-        "notifications": false,
-        "externalApi": false,
-        "analytics": true
-      }
-    }
-  ]
+  {
+   "id": "stop-game",
+   "legacy": "app2",
+   "appStoreId": "6733242058",
+   "name": "10秒止めゲーム",
+   "summary": "選択したレベルに応じて 0.01 秒刻みでカウントし、目標時間ぴったりで止めることを目指すシンプルなゲームです。",
+   "features": [
+    "レベル選択（1〜4）",
+    "0.01 秒刻みの精密タイマー",
+    "目標との誤差を結果表示",
+    "記録の保存・共有"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": false,
+    "notifications": false,
+    "externalApi": false
+   }
+  },
+  {
+   "id": "dining-search",
+   "legacy": "app3",
+   "appStoreId": "6736398611",
+   "name": "外食サーチ",
+   "summary": "現在地周辺の飲食店を地図で検索し、条件で絞り込んで見つけられるアプリです。",
+   "features": [
+    "現在地周辺のレストラン検索",
+    "料理・距離での絞り込み",
+    "店舗の詳細情報・レビュー表示",
+    "お気に入り保存"
+   ],
+   "flags": {
+    "ads": true,
+    "location": true,
+    "photos": false,
+    "notifications": false,
+    "externalApi": true
+   }
+  },
+  {
+   "id": "photo-book",
+   "legacy": "app4",
+   "appStoreId": "6739175712",
+   "name": "シンプル写真帳",
+   "summary": "写真をページごとに配置し、コメントを添えて整理・閲覧できるアプリです。作成した写真帳は PDF として書き出せます。",
+   "features": [
+    "端末内の写真を取り込み・保存",
+    "ページ単位の配置とコメント編集",
+    "PDF 書き出し・共有",
+    "シンプルで分かりやすい UI"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": true,
+    "notifications": false,
+    "externalApi": false
+   }
+  },
+  {
+   "id": "schedule-manager",
+   "updated": "2026-07-11",
+   "name": "スケマネ",
+   "summary": "個人の予定を管理し、必要に応じて工事現場の管理者や同僚とグループ単位で共有できるスケジュールアプリです。",
+   "features": [
+    "日・週・月単位の予定管理",
+    "複数グループの作成・参加・切り替え",
+    "管理者からの変更依頼と作業員による承認・却下",
+    "Googleによるクラウド同期とPush通知"
+   ],
+   "flags": {
+    "ads": false,
+    "location": false,
+    "photos": false,
+    "notifications": true,
+    "externalApi": false,
+    "firebase": true,
+    "accounts": true,
+    "cloudSync": true,
+    "crashReports": true,
+    "workCollaboration": true
+   }
+  },
+  {
+   "id": "jigpicca",
+   "appStoreId": "6790121731",
+   "updated": "2026-07-12",
+   "name": "JigPicca - 写真ジグソーパズル",
+   "summary": "写真やサンプル画像からジグソーパズルを作り、ノーマルモードや回転ピースのハードモード、Game Centerランキングを楽しめるパズルゲームです。",
+   "features": [
+    "9・16・25ピースのジグソーパズル",
+    "ノーマルモードと回転ピースのハードモード",
+    "スコア履歴、実績、今日のパズル",
+    "難易度・ピース数別のGame Center世界ランキング"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": true,
+    "notifications": false,
+    "externalApi": false
+   }
+  },
+  {
+   "id": "habiroku",
+   "updated": "2026-07-16",
+   "name": "ハビロク",
+   "summary": "毎日の習慣を1タップで記録し、ストリーク（連続日数）や週間サマリー・月間ヒートマップで継続を確認できる習慣トラッカーです。アカウント登録は不要で、記録データは端末内にのみ保存されます。",
+   "features": [
+    "習慣の登録（色・毎日/曜日の頻度・リマインダー）",
+    "今日の習慣を1タップでチェック、当日の取り消しにも対応",
+    "ストリーク・達成率・月間ヒートマップで継続を可視化",
+    "習慣ごとのリマインダー通知（端末内のローカル通知）"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": false,
+    "notifications": true,
+    "externalApi": false,
+    "analytics": true
+   }
+  },
+  {
+   "id": "chroma-merge",
+   "updated": "2026-07-18",
+   "name": "Chroma Merge",
+   "summary": "見本の色をパレットの絵の具を混ぜて再現する色彩パズルゲームです。100ステージのレシピ探索型パズルで、混ぜるたびに色がリアルタイムに変化し、一致度メーターで見本への近さを確認できます。進捗は端末内にのみ保存され、アカウント登録は不要です。",
+   "features": [
+    "100ステージの色調合パズル（順次解放・オートセーブ）",
+    "リアルタイム混色と一致度メーター、最少滴数クリアで星3評価",
+    "Game Center のランキング（累計スター）と実績に対応",
+    "ヒント機能（リワード動画視聴で1回）"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": false,
+    "notifications": false,
+    "externalApi": false,
+    "analytics": true
+   }
+  },
+  {
+   "id": "qr-toolbox",
+   "updated": "2026-07-18",
+   "name": "QR Toolbox",
+   "summary": "QRコードの読み取り・作成・履歴管理がひとつで完結するツールアプリです。起動するとすぐに読み取りが始まり、カメラのほか写真からの読み取りや1Dバーコードにも対応。URL・テキスト・Wi-Fi情報からのQRコード作成もでき、読み取り・作成の履歴は端末内にのみ保存されます。アカウント登録は不要です。",
+   "features": [
+    "起動即スキャン（カメラ・写真からの読み取り・1Dバーコード・ライト対応）",
+    "URL・テキスト・Wi-FiのQRコード作成（ライブプレビュー・共有・画像保存）",
+    "読み取り・作成の履歴を自動保存（お気に入り・絞り込み・再表示）",
+    "履歴は端末内にのみ保存、アカウント不要"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": true,
+    "notifications": false,
+    "externalApi": false,
+    "analytics": true
+   }
+  },
+  {
+   "id": "snap-to-text",
+   "appStoreId": "6792455372",
+   "name": "Snap to Text",
+   "summary": "撮影するか写真を選ぶだけで、画像に写った文字をオンデバイスで読み取り、コピー・翻訳・共有ができるアプリです。すべての処理は端末内で完結し、画像や文字を外部に送信しません。読み取った文字は履歴に保存され、いつでも見返せます。",
+   "features": [],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": true,
+    "notifications": false,
+    "externalApi": false,
+    "analytics": true
+   }
+  },
+  {
+   "id": "waterday",
+   "updated": "2026-07-19",
+   "name": "Waterday",
+   "summary": "水を飲むたびワンタップで記録し、今日の目標に対する達成度が進捗リングで一目で分かる水分トラッカーです。コップ・マグ・ボトルのプリセットやカスタム量から素早く記録でき、週間グラフ・月間ヒートマップ・連続達成日数で継続を確認できます。ホーム画面ウィジェットと飲水リマインダーにも対応。アカウント登録は不要で、記録データは端末内にのみ保存されます。",
+   "features": [
+    "コップ・マグ・ボトルのプリセット、またはカスタム量をワンタップで記録",
+    "今日の目標に対する進捗リングと、達成時のお祝い演出",
+    "週間グラフ・月間ヒートマップ・連続達成日数で継続を可視化",
+    "ホーム画面ウィジェット（進捗リング／ワンタップ記録）と飲水リマインダー"
+   ],
+   "flags": {
+    "ads": true,
+    "location": false,
+    "photos": false,
+    "notifications": true,
+    "externalApi": false,
+    "analytics": true
+   }
+  }
+ ]
 }
