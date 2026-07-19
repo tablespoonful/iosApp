@@ -188,6 +188,21 @@
         "externalApi": false,
         "analytics": true
       }
+    },
+    {
+      "id": "snap-to-text",
+      "appStoreId": null,
+      "name": "Snap to Text",
+      "summary": "撮影するか写真を選ぶだけで、画像に写った文字をオンデバイスで読み取り、コピー・翻訳・共有ができるアプリです。すべての処理は端末内で完結し、画像や文字を外部に送信しません。読み取った文字は履歴に保存され、いつでも見返せます。",
+      "features": [],
+      "flags": {
+        "ads": true,
+        "location": false,
+        "photos": true,
+        "notifications": false,
+        "externalApi": false,
+        "analytics": true
+      }
     }
   ]
 }
