@@ -87,7 +87,8 @@
     },
     {
       "id": "schedule-manager",
-      "updated": "2026-07-11",
+      "appStoreId": "6790022169",
+      "updated": "2026-07-27",
       "name": "スケマネ",
       "summary": "個人の予定を管理し、必要に応じて工事現場の管理者や同僚とグループ単位で共有できるスケジュールアプリです。",
       "features": [
@@ -97,7 +98,7 @@
         "Googleによるクラウド同期とPush通知"
       ],
       "flags": {
-        "ads": false,
+        "ads": true,
         "location": false,
         "photos": false,
         "notifications": true,

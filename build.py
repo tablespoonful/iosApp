@@ -72,19 +72,32 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p('店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。当方が独自に検索履歴や位置情報を保存・収集することはありません。'))
 
     if firebase:
-        out.append("    <h3>2. Googleのサービス利用</h3>")
+        # 見出し番号は ads の有無で1つずれるため動的に採番する
+        n = 2
+        out.append(f"    <h3>{n}. Googleのサービス利用</h3>")
         firebase_text = "認証、クラウド保存、Push通知のためGoogleが提供するサービスを利用します。"
         if crash_reports:
             firebase_text += "また、不具合調査のためGoogleのクラッシュ解析サービスへクラッシュ情報と診断情報を送信する場合があります。"
         firebase_text += '詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'
         out.append(p(firebase_text))
-        out.append("    <h3>3. 利用目的・第三者提供</h3>")
-        out.append(p("収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。法令に基づく場合を除き、Google等の業務委託先以外の第三者へ提供しません。"))
-        out.append("    <h3>4. 保存期間・削除</h3>")
+        n += 1
+        if ads:
+            out.append(f"    <h3>{n}. 広告について</h3>")
+            out.append(p('本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
+            n += 1
+        out.append(f"    <h3>{n}. 利用目的・第三者提供</h3>")
+        purpose_text = "収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。"
+        purpose_text += "法令に基づく場合を除き、Google等の業務委託先および上記の広告事業者以外の第三者へ提供しません。" if ads \
+            else "法令に基づく場合を除き、Google等の業務委託先以外の第三者へ提供しません。"
+        out.append(p(purpose_text))
+        n += 1
+        out.append(f"    <h3>{n}. 保存期間・削除</h3>")
         out.append(p("設定画面からアカウントを削除できます。アカウント削除時は、法令上または不正防止上保持が必要な情報を除き、関連する個人情報を削除します。グループで共有された情報は、他の利用者の業務記録として保持される場合があります。"))
-        out.append("    <h3>5. 安全管理</h3>")
+        n += 1
+        out.append(f"    <h3>{n}. 安全管理</h3>")
         out.append(p("アクセス制御、認証および通信の暗号化など、合理的な安全管理措置を講じます。"))
-        out.append("    <h3>6. プライバシーポリシーの変更</h3>")
+        n += 1
+        out.append(f"    <h3>{n}. プライバシーポリシーの変更</h3>")
         out.append(p("本ポリシーは必要に応じて改定することがあります。重要な変更はアプリ内または本ページでお知らせします。"))
         return "\n".join(out)
 
