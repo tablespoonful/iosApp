@@ -33,6 +33,35 @@ def features_block(features: list[str]) -> str:
     return f"    <h2>主な機能</h2>\n    <ul>\n{items}\n    </ul>"
 
 
+
+def audit_privacy(app_id: str, html: str, flags: dict) -> list:
+    """公開前に、生成したプライバシーポリシーが実挙動と矛盾していないか自己検査する。
+
+    2026-08-01: `firebase` フラグだけでバックエンド型の文面を出していたため、端末内完結の
+    アプリに「サインイン」「クラウド保存」「予定の共有」を記載した虚偽のポリシーが公開された。
+    プライバシーポリシーの虚偽は App Store の却下要因であり、生成物を人が読み返す運用では
+    19ページ分を毎回確認できない。機械で止める。
+    """
+    problems = []
+    if "として、を収集し" in html or "、を収集し" in html:
+        problems.append("収集項目が空のまま文が生成されている（フラグの組み合わせが想定外）")
+    backend_phrases = {
+        "サインイン": "アカウント機能",
+        "クラウドサービス上に保存": "クラウド保存",
+        "グループで共有": "共有機能",
+        "設定画面からアカウントを削除": "アカウント削除",
+    }
+    if not (flags.get("accounts") or flags.get("cloudSync")):
+        for phrase, feature in backend_phrases.items():
+            if phrase in html:
+                problems.append(f"{feature}が無いのに「{phrase}」を記載している")
+    if flags.get("ads") and "AdMob" not in html:
+        problems.append("広告ありなのに AdMob の開示が無い")
+    if not flags.get("ads") and "AdMob" in html:
+        problems.append("広告なしなのに AdMob の開示がある")
+    return [f"{app_id}: {m}" for m in problems]
+
+
 def privacy_block(name: str, flags: dict) -> str:
     ads = flags.get("ads")
     location = flags.get("location")
@@ -173,6 +202,7 @@ REDIRECT = """<!DOCTYPE html>
 """
 
 # --- render per-app pages + legacy redirects ---
+privacy_problems = []
 for app in data["apps"]:
     page = (template
             .replace("{{NAME}}", esc(app["name"]))
@@ -184,10 +214,17 @@ for app in data["apps"]:
             .replace("{{SUPPORT_URL}}", esc(site["supportFormUrl"]))
             .replace("{{YEAR}}", str(site["year"]))
             .replace("{{DEVELOPER}}", esc(site["developer"])))
+    privacy_problems += audit_privacy(app["id"], page, app.get("flags", {}))
     (ROOT / f"{app['id']}.html").write_text(page, encoding="utf-8")
     if app.get("legacy"):
         (ROOT / f"{app['legacy']}.html").write_text(
             REDIRECT.format(id=app["id"], name=esc(app["name"])), encoding="utf-8")
+
+if privacy_problems:
+    print("✗ プライバシーポリシーが実挙動と矛盾しています（公開前に修正してください）:")
+    for problem in privacy_problems:
+        print(f"  - {problem}")
+    raise SystemExit(1)
 
 # --- index ---
 items = "\n".join(
