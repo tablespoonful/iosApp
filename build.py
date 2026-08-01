@@ -44,9 +44,15 @@ def privacy_block(name: str, flags: dict) -> str:
     cloud_sync = flags.get("cloudSync")
     crash_reports = flags.get("crashReports")
     analytics = flags.get("analytics")
+    # `firebase` だけでは「アカウント・クラウド保存・Push を伴うバックエンド」を意味しない。
+    # Analytics / Crashlytics しか使わないアプリにこの分岐を当てると、サインイン・クラウド保存・
+    # 予定の共有といった存在しない機能を記載した虚偽のプライバシーポリシーが公開される
+    # （オキロク 2026-08-01: 収集項目が空のまま「として、を収集し」という壊れた文まで出た）。
+    # バックエンド型の文面は、実際にアカウントかクラウド同期がある場合に限る。
+    backend = bool(firebase and (accounts or cloud_sync))
 
     out = [p(f"「{esc(name)}」は、以下の方針に基づきユーザーの情報を取り扱います。"), "    <h3>1. 収集・処理する情報</h3>"]
-    if firebase:
+    if backend:
         collected = ""
         if accounts:
             collected += "アカウント識別子、メールアドレス、氏名、所属グループ情報"
@@ -62,7 +68,7 @@ def privacy_block(name: str, flags: dict) -> str:
             out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
     if photos:
         out.append(p("写真へのアクセスは、あなたが選択した写真の取り込み・編集のためだけに使用し、端末内で完結します。写真を外部サーバーへ送信することはありません。"))
-    if notifications and firebase:
+    if notifications and backend:
         out.append(p("変更依頼などのPush通知を配信するため、端末の通知トークンをGoogleのクラウドサービスに保存します。通知はアプリ内またはiOSの設定から無効にできます。"))
     elif notifications:
         out.append(p("リマインダー等の通知は端末内でスケジュールされ、通知内容が外部に送信されることはありません。"))
@@ -71,7 +77,7 @@ def privacy_block(name: str, flags: dict) -> str:
     if external:
         out.append(p('店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。当方が独自に検索履歴や位置情報を保存・収集することはありません。'))
 
-    if firebase:
+    if backend:
         # 見出し番号は ads の有無で1つずれるため動的に採番する
         n = 2
         out.append(f"    <h3>{n}. Googleのサービス利用</h3>")
