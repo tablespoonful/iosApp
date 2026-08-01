@@ -73,6 +73,7 @@ def privacy_block(name: str, flags: dict) -> str:
     cloud_sync = flags.get("cloudSync")
     crash_reports = flags.get("crashReports")
     analytics = flags.get("analytics")
+    local_history = flags.get("localHistory")
     # `firebase` だけでは「アカウント・クラウド保存・Push を伴うバックエンド」を意味しない。
     # Analytics / Crashlytics しか使わないアプリにこの分岐を当てると、サインイン・クラウド保存・
     # 予定の共有といった存在しない機能を記載した虚偽のプライバシーポリシーが公開される
@@ -90,9 +91,18 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Googleのクラウドサービス上に保存します。"))
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
     else:
-        if analytics:
+        if analytics or crash_reports:
             out.append(p("本アプリの主要な機能は端末内で完結し、記録・進捗などのデータは端末内にのみ保存されます。当方が氏名やメールアドレス等、個人を特定できる情報をサーバーに収集・保存することはありません。"))
-            out.append(p('品質改善のため、Google Firebase（Analytics / Crashlytics）を利用し、匿名の利用状況（画面表示・操作イベント）、クラッシュ情報、およびデバイス識別子を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
+            if analytics and crash_reports:
+                service = "Google Firebase（Analytics / Crashlytics）"
+                sent_data = "匿名の利用状況（画面表示・操作イベント）、クラッシュ情報、およびデバイス識別子"
+            elif analytics:
+                service = "Google Firebase Analytics"
+                sent_data = "匿名の利用状況（画面表示・操作イベント）およびデバイス識別子"
+            else:
+                service = "Google Firebase Crashlytics"
+                sent_data = "クラッシュ情報およびデバイス識別子"
+            out.append(p(f'品質改善のため、{service}を利用し、{sent_data}を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
         else:
             out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
     if photos:
@@ -104,7 +114,8 @@ def privacy_block(name: str, flags: dict) -> str:
     if location:
         out.append(p("現在地情報は、周辺の検索結果を表示する目的でのみ使用します。"))
     if external:
-        out.append(p('店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。当方が独自に検索履歴や位置情報を保存・収集することはありません。'))
+        history_text = "検索履歴は端末内にのみ保存され、当方のサーバーには送信されません。" if local_history else "当方が独自に検索履歴を保存・収集することはありません。"
+        out.append(p(f'店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。{history_text}また、当方は位置情報を保存・収集しません。'))
 
     if backend:
         # 見出し番号は ads の有無で1つずれるため動的に採番する
