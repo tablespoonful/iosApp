@@ -75,6 +75,7 @@ def privacy_block(name: str, flags: dict) -> str:
     analytics = flags.get("analytics")
     local_history = flags.get("localHistory")
     non_personalized_ads = flags.get("nonPersonalizedAds")
+    remote_config = flags.get("remoteConfig")
     # `firebase` だけでは「アカウント・クラウド保存・Push を伴うバックエンド」を意味しない。
     # Analytics / Crashlytics しか使わないアプリにこの分岐を当てると、サインイン・クラウド保存・
     # 予定の共有といった存在しない機能を記載した虚偽のプライバシーポリシーが公開される
@@ -99,15 +100,27 @@ def privacy_block(name: str, flags: dict) -> str:
     else:
         if analytics or crash_reports:
             out.append(p("本アプリの主要な機能は端末内で完結し、記録・進捗などのデータは端末内にのみ保存されます。当方が氏名やメールアドレス等、個人を特定できる情報をサーバーに収集・保存することはありません。"))
-            if analytics and crash_reports:
-                service = "Google Firebase（Analytics / Crashlytics）"
-                sent_data = "匿名の利用状況（画面表示・操作イベント）、クラッシュ情報、およびデバイス識別子"
-            elif analytics:
-                service = "Google Firebase Analytics"
-                sent_data = "匿名の利用状況（画面表示・操作イベント）およびデバイス識別子"
+            # Remote Config も Firebase Installation ID（デバイス識別子）を送るので、
+            # 使っているなら名指しする。「Analytics / Crashlytics だけ」と読める文面は、
+            # 実際には3つ目の SDK が通信しているという意味で不正確になる。
+            modules = [m for m, on in (("Analytics", analytics), ("Crashlytics", crash_reports),
+                                       ("Remote Config", remote_config)) if on]
+            if len(modules) > 1:
+                service = f"Google Firebase（{' / '.join(modules)}）"
             else:
-                service = "Google Firebase Crashlytics"
-                sent_data = "クラッシュ情報およびデバイス識別子"
+                service = f"Google Firebase {modules[0]}"
+            parts = []
+            if analytics:
+                parts.append("匿名の利用状況（画面表示・操作イベント）")
+            if crash_reports:
+                parts.append("クラッシュ情報")
+            parts.append("デバイス識別子")
+            if len(parts) == 1:
+                sent_data = parts[0]
+            elif len(parts) == 2:
+                sent_data = f"{parts[0]}および{parts[1]}"
+            else:
+                sent_data = "、".join(parts[:-1]) + "、および" + parts[-1]
             out.append(p(f'品質改善のため、{service}を利用し、{sent_data}を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
         else:
             out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
