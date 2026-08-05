@@ -84,7 +84,7 @@ def privacy_block(name: str, flags: dict) -> str:
     backend = bool(firebase and (accounts or cloud_sync))
 
     if non_personalized_ads:
-        ad_privacy_text = ('本アプリは Google AdMob による広告を表示します。地域に応じてGoogleの同意フォームを表示し、広告は非パーソナライズ設定で配信します。AdMob は広告配信・計測、不正利用防止のために IP アドレス、デバイス識別子、広告データ、操作情報、診断情報などを収集・利用する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリはIDFAを利用せず、App Tracking Transparencyによる許可要求や、他社のアプリ・Webサイトを横断するトラッキングを行いません。')
+        ad_privacy_text = ('本アプリは Google AdMob による広告を表示します。地域に応じてGoogleの同意フォームを表示し、広告は非パーソナライズ設定で配信します。AdMob は広告配信・計測、不正利用防止のためにデバイス識別子、広告データ、操作情報、診断情報などを収集・利用する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリはIDFAを利用せず、App Tracking Transparencyによる許可要求や、他社のアプリ・Webサイトを横断するトラッキングを行いません。')
     else:
         ad_privacy_text = None
 
@@ -154,7 +154,7 @@ def privacy_block(name: str, flags: dict) -> str:
         n += 1
         if ads:
             out.append(f"    <h3>{n}. 広告について</h3>")
-            out.append(p(ad_privacy_text or '本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
+            out.append(p(ad_privacy_text or '本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子などの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
             n += 1
         out.append(f"    <h3>{n}. 利用目的・第三者提供</h3>")
         purpose_text = "収集情報は、本人確認、予定の保存・共有、変更依頼、通知配信、不具合調査のために利用します。"
@@ -174,7 +174,7 @@ def privacy_block(name: str, flags: dict) -> str:
 
     if ads:
         out.append("    <h3>2. 広告について</h3>")
-        out.append(p(ad_privacy_text or '本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子（IDFA 等）や IP アドレスなどの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
+        out.append(p(ad_privacy_text or '本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測のために広告識別子（IDFA 等）などの情報を収集・利用し、Google と共有する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。'))
         third = "    <h3>3. 第三者への提供</h3>"
         _google_role = "広告事業者・分析サービスの提供元（Google）" if analytics else "広告事業者（Google）"
         third_body = f"上記の{_google_role}および地図サービスの提供元（Apple）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。" if external \
