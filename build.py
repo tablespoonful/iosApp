@@ -134,7 +134,13 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p("現在地情報は、周辺の検索結果を表示する目的でのみ使用します。"))
     if external:
         history_text = "検索履歴は端末内にのみ保存され、当方のサーバーには送信されません。" if local_history else "当方が独自に検索履歴を保存・収集することはありません。"
-        out.append(p(f'店舗検索・地図表示・住所変換のため、検索条件や現在地を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。{history_text}また、当方は位置情報を保存・収集しません。'))
+        # 何を Apple のマップサービスへ送るかはアプリで違う。既定文は「店舗検索＋現在地」を
+        # 前提にしており、現在地を使わないアプリ（写真の EXIF 座標を地名に変えるだけ等）に
+        # そのまま当てると、していないことを書いた虚偽のポリシーになる。アプリ側で
+        # flags.mapsSentData / mapsPurpose を指定して上書きできるようにする。
+        maps_purpose = flags.get("mapsPurpose") or "店舗検索・地図表示・住所変換"
+        maps_sent = flags.get("mapsSentData") or "検索条件や現在地"
+        out.append(p(f'{maps_purpose}のため、{maps_sent}を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。{history_text}また、当方は位置情報を保存・収集しません。'))
 
     if backend:
         # 見出し番号は ads の有無で1つずれるため動的に採番する
