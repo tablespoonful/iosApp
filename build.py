@@ -33,6 +33,9 @@ def features_block(features: list[str]) -> str:
     return f"    <h2>主な機能</h2>\n    <ul>\n{items}\n    </ul>"
 
 
+HEALTHKIT_HEADING = "Apple ヘルスケア（HealthKit）"
+
+
 
 def audit_privacy(app_id: str, html: str, flags: dict) -> list:
     """公開前に、生成したプライバシーポリシーが実挙動と矛盾していないか自己検査する。
@@ -59,6 +62,11 @@ def audit_privacy(app_id: str, html: str, flags: dict) -> list:
         problems.append("広告ありなのに AdMob の開示が無い")
     if not flags.get("ads") and "AdMob" in html:
         problems.append("広告なしなのに AdMob の開示がある")
+    healthkit_disclosed = f"<h4>{HEALTHKIT_HEADING}</h4>" in html
+    if flags.get("healthKit") and not healthkit_disclosed:
+        problems.append("HealthKit 利用ありなのに Apple ヘルスケアの開示が無い")
+    if not flags.get("healthKit") and healthkit_disclosed:
+        problems.append("HealthKit 利用なしなのに Apple ヘルスケアの開示がある")
     return [f"{app_id}: {m}" for m in problems]
 
 
@@ -66,6 +74,10 @@ def privacy_block(name: str, flags: dict) -> str:
     ads = flags.get("ads")
     location = flags.get("location")
     photos = flags.get("photos")
+    # カメラは写真ライブラリとは別の権限。photos だけを立てると、カメラを要求するアプリの
+    # ポリシーがカメラに一言も触れないページになる。Dimemo はカメラ許可フロー（5.1.1(iv)）で
+    # 却下された直後の再提出で、審査員がポリシーを開いてもカメラの記載が無い状態だった。
+    camera = flags.get("camera")
     notifications = flags.get("notifications")
     external = flags.get("externalApi")
     firebase = flags.get("firebase")
@@ -76,6 +88,7 @@ def privacy_block(name: str, flags: dict) -> str:
     local_history = flags.get("localHistory")
     non_personalized_ads = flags.get("nonPersonalizedAds")
     remote_config = flags.get("remoteConfig")
+    healthkit = flags.get("healthKit")
     # `firebase` だけでは「アカウント・クラウド保存・Push を伴うバックエンド」を意味しない。
     # Analytics / Crashlytics しか使わないアプリにこの分岐を当てると、サインイン・クラウド保存・
     # 予定の共有といった存在しない機能を記載した虚偽のプライバシーポリシーが公開される
@@ -99,7 +112,8 @@ def privacy_block(name: str, flags: dict) -> str:
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
     else:
         if analytics or crash_reports:
-            out.append(p("本アプリの主要な機能は端末内で完結し、記録・進捗などのデータは端末内にのみ保存されます。当方が氏名やメールアドレス等、個人を特定できる情報をサーバーに収集・保存することはありません。"))
+            local_storage = "端末内に保存されます" if healthkit else "端末内にのみ保存されます"
+            out.append(p(f"本アプリの主要な機能は端末内で完結し、記録・進捗などのデータは{local_storage}。当方が氏名やメールアドレス等、個人を特定できる情報をサーバーに収集・保存することはありません。"))
             # Remote Config も Firebase Installation ID（デバイス識別子）を送るので、
             # 使っているなら名指しする。「Analytics / Crashlytics だけ」と読める文面は、
             # 実際には3つ目の SDK が通信しているという意味で不正確になる。
@@ -124,6 +138,14 @@ def privacy_block(name: str, flags: dict) -> str:
             out.append(p(f'品質改善のため、{service}を利用し、{sent_data}を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
         else:
             out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
+    if healthkit:
+        health_data_types = flags.get("healthDataTypes") or "本アプリが対応する健康データ"
+        out.append(f"    <h4>{HEALTHKIT_HEADING}</h4>")
+        out.append(p(f"本アプリがApple ヘルスケア（HealthKit）で読み書きする健康データは、{esc(health_data_types)}です。ヘルスケア連携は既定でオフです。読み込みと書き込みは個別に設定でき、ユーザーが本アプリの設定画面で明示的に有効にした場合にのみ行います。"))
+        out.append(p("読み込みを有効にすると、Apple ヘルスケアに保存された対象データを本アプリの記録へ取り込みます。書き込みを有効にすると、本アプリで記録した対象データをApple ヘルスケアへ保存します。"))
+        out.append(p("Apple ヘルスケア由来の健康データを広告、マーケティング、データマイニングに使用せず、第三者へ提供せず、解析イベントにも含めません。健康データは端末内とApple ヘルスケアにのみ保存され、開発者のサーバーへ送信しません。ヘルスケアへのアクセスは、iOSの「ヘルスケア」Appからいつでも取り消せます。"))
+    if camera:
+        out.append(p("カメラへのアクセスは、あなたが撮影した写真をアプリに取り込んで編集するためだけに使用します。撮影した写真は端末内に保存され、あなたが書き出して共有するときにのみ端末の外に出ます。カメラの許可を求めるのは、あなたがカメラでの撮影を選んだときだけで、許可しなくても写真ライブラリから選ぶ経路をそのまま利用できます。"))
     if photos:
         out.append(p("写真へのアクセスは、あなたが選択した写真の取り込み・編集のためだけに使用し、端末内で完結します。写真を外部サーバーへ送信することはありません。"))
     if notifications and backend:
