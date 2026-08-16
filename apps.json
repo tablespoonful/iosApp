@@ -754,7 +754,7 @@
     },
     {
       "id": "measnap",
-      "updated": "2026-08-15",
+      "updated": "2026-08-16",
       "name": "Measnap",
       "summary": "カメラをかざしてタップするだけで、長さと面積をその場で測れるアプリです。画面中央の照準を合わせてタップすると3D空間に点が置かれ、2点目で距離が出ます。続けてタップすれば折れ線の連続計測になり、線分ごとの長さと合計が同時に読めます。面積は3点以上で任意の多角形を囲めるので、長方形でないL字の部屋や変形した床も測れ、面積と周長が一緒に出ます。測り終えたら保存を押すだけで、寸法線が写り込んだ写真と数値がそのまま履歴に残ります。あとから見返して「どこを測ったのか」が写真で分かり、メモを添えたり、画像として共有したりできます。単位はメートル法とヤード・ポンド法を切り替えられ、既定は端末の設定に従います。カメラの映像も測定した記録も端末の中だけで処理され、外部へ送信しません。アカウント登録もログインも不要です。",
       "features": [
@@ -775,12 +775,12 @@
         "photos": false,
         "notifications": false,
         "externalApi": false,
-        "firebase": true,
+        "firebase": false,
         "accounts": false,
         "cloudSync": false,
-        "crashReports": true,
-        "analytics": true,
-        "remoteConfig": true,
+        "crashReports": false,
+        "analytics": false,
+        "remoteConfig": false,
         "localHistory": true
       }
     }
