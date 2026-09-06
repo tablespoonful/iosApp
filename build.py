@@ -247,6 +247,51 @@ def terms_block(flags: dict) -> str:
         p("本規約は必要に応じて変更することがあります。重要な変更はアプリ内または本ページでお知らせします。"),
     ])
 
+
+def lang_switch_block(has_english: bool) -> str:
+    if not has_english:
+        return ""
+    return (
+        '    <p class="lang-switch">'
+        '<a href="#privacy">日本語</a> / <a href="#privacy-en">English</a>'
+        "</p>\n"
+    )
+
+
+def english_legal_block(app: dict) -> str:
+    """英語のプライバシー／利用規約。現状は Simple Photo Book（photo-book）のみ。
+
+    日本語節（収集情報・広告・第三者提供・改定／ライセンス・知的財産・免責・利用制限）を
+    忠実に英訳する。アプリ名は "Simple Photo Book"。
+    """
+    if app.get("id") != "photo-book":
+        return ""
+    return "\n".join([
+        '    <h2 id="privacy-en">Privacy Policy</h2>',
+        p('"Simple Photo Book" handles user information according to the following policy.'),
+        "    <h3>1. Information We Collect and Process</h3>",
+        p("The main features of this app run entirely on your device. We do not collect or store your personal information on our servers."),
+        p("Access to photos is used only to import and edit the photos you select, and remains on your device. Photos are never sent to an external server."),
+        "    <h3>2. Advertising</h3>",
+        p('This app displays ads via Google AdMob. AdMob may collect and use information such as advertising identifiers (for example IDFA) for ad delivery and measurement, and may share it with Google. Please see <a href="https://policies.google.com/technologies/ads">Google\'s advertising policies</a> for details. This app does not request App Tracking Transparency permission and does not track users across apps or websites (ads are delivered without cross-app tracking).'),
+        "    <h3>3. Sharing with Third Parties</h3>",
+        p("Except for the advertising provider above (Google), we do not provide your personal information to third parties."),
+        "    <h3>4. Changes to This Privacy Policy</h3>",
+        p("We may update this policy as needed. Material changes will be announced in the app or on this page."),
+        '    <h2 id="terms-en">Terms of Use</h2>',
+        "    <h3>1. License</h3>",
+        p("This app is provided free of charge for personal use. Commercial use, resale, or modification is not permitted."),
+        "    <h3>2. Intellectual Property</h3>",
+        p("Intellectual property rights in this app and its content belong to the licensor. Unauthorized copying, distribution, or publication is prohibited."),
+        "    <h3>3. Disclaimer</h3>",
+        p('This app is provided "as is" without warranties of fitness for a particular purpose, accuracy, or completeness. We are not liable for any damages arising from use of this app.'),
+        "    <h3>4. Restrictions on Use</h3>",
+        p("If a user violates these terms, we reserve the right to restrict or prohibit use of this app."),
+        "    <h3>5. Changes to These Terms</h3>",
+        p("These terms may be changed as needed. Updated terms take effect when notified in the app or on this page."),
+    ])
+
+
 REDIRECT = """<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -262,13 +307,16 @@ REDIRECT = """<!DOCTYPE html>
 # --- render per-app pages + legacy redirects ---
 privacy_problems = []
 for app in data["apps"]:
+    english = english_legal_block(app)
     page = (template
             .replace("{{NAME}}", esc(app["name"]))
+            .replace("{{LANG_SWITCH}}", lang_switch_block(bool(english)))
             .replace("{{UPDATED}}", esc(app.get("updated", site["updated"])))
             .replace("{{SUMMARY}}", esc(app["summary"]))
             .replace("{{FEATURES}}", features_block(app.get("features", [])))
             .replace("{{PRIVACY}}", privacy_block(app["name"], app.get("flags", {})))
             .replace("{{TERMS}}", terms_block(app.get("flags", {})))
+            .replace("{{ENGLISH_LEGAL}}", english)
             .replace("{{SUPPORT_URL}}", esc(site["supportFormUrl"]))
             .replace("{{YEAR}}", str(site["year"]))
             .replace("{{DEVELOPER}}", esc(site["developer"])))
