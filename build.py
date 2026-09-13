@@ -227,8 +227,30 @@ TERMS = "\n".join([
 ])
 
 
+IAP_TERMS = "\n".join([
+    "    <h3>1. ライセンス</h3>",
+    p("本アプリの基本機能は無料で利用でき、一部の機能および広告の非表示は有料プランで提供されます。商業目的での使用、再販、改変はできません。"),
+    "    <h3>2. アプリ内課金</h3>",
+    p("有料プランには、自動更新のサブスクリプションおよび買い切り（非消耗型）があります。代金は App Store を通じて Apple ID に請求されます。具体的な価格およびプランの内容は、アプリ内の購入画面および App Store に表示される内容が適用されます。"),
+    p("サブスクリプションは、現在の期間が終了する24時間前までに解約しない限り、自動的に更新されます。更新料は、現在の期間が終了する前の24時間以内に請求されます。"),
+    p("サブスクリプションの解約は、iOS の「設定」アプリから Apple アカウントを開き、「サブスクリプション」を選択して行うものとし、本アプリから解約することはできません。解約後も、支払い済みの期間が終了するまでは引き続き有料プランを利用できます。"),
+    p("買い切りで購入した機能は、購入時と同じ Apple ID を使用し、本アプリの「購入を復元」から復元できます。返金は Apple の定めに従うものとし、当方から直接返金することはできません。"),
+    p("価格およびプランの内容は変更されることがあります。変更する場合は、アプリ内または本ページで事前に告知します。"),
+    "    <h3>3. 知的財産権</h3>",
+    p("本アプリおよびそのコンテンツに関する知的財産権は、ライセンサーに帰属します。無断での複製・配布・公開は禁止されています。"),
+    "    <h3>4. 免責事項</h3>",
+    p("本アプリは「現状有姿」で提供され、特定目的への適合性・正確性・完全性を保証しません。本アプリの利用により生じたいかなる損害についても、当方は責任を負いません。"),
+    "    <h3>5. 利用制限</h3>",
+    p("利用者が本規約に違反した場合、当方は本アプリの利用を制限または禁止する権利を有します。"),
+    "    <h3>6. 規約の変更</h3>",
+    p("本規約は必要に応じて変更されることがあります。変更後の規約は、アプリ内または本ページで通知された時点から効力を生じます。"),
+])
+
+
 def terms_block(flags: dict) -> str:
     if not flags.get("workCollaboration"):
+        if flags.get("iap"):
+            return IAP_TERMS
         return TERMS
     return "\n".join([
         "    <h3>1. 利用条件</h3>",
@@ -258,10 +280,44 @@ def lang_switch_block(has_english: bool) -> str:
     )
 
 
+ENGLISH_TERMS = [
+    "    <h3>1. License</h3>",
+    p("This app is provided free of charge for personal use. Commercial use, resale, or modification is not permitted."),
+    "    <h3>2. Intellectual Property</h3>",
+    p("Intellectual property rights in this app and its content belong to the licensor. Unauthorized copying, distribution, or publication is prohibited."),
+    "    <h3>3. Disclaimer</h3>",
+    p('This app is provided "as is" without warranties of fitness for a particular purpose, accuracy, or completeness. We are not liable for any damages arising from use of this app.'),
+    "    <h3>4. Restrictions on Use</h3>",
+    p("If a user violates these terms, we reserve the right to restrict or prohibit use of this app."),
+    "    <h3>5. Changes to These Terms</h3>",
+    p("These terms may be changed as needed. Updated terms take effect when notified in the app or on this page."),
+]
+
+
+ENGLISH_IAP_TERMS = [
+    "    <h3>1. License</h3>",
+    p("The basic features of this app are available free of charge, while certain features and the removal of advertisements are offered through paid plans. Commercial use, resale, or modification is not permitted."),
+    "    <h3>2. In-App Purchases</h3>",
+    p("Paid plans include auto-renewable subscriptions and a one-time purchase (non-consumable). Payment is charged to your Apple ID through the App Store. The specific price and plan details displayed on the in-app purchase screen and in the App Store apply."),
+    p("A subscription automatically renews unless canceled at least 24 hours before the end of the current period. The renewal fee is charged within 24 hours before the end of the current period."),
+    p('To cancel a subscription, open the iOS Settings app, select your Apple Account, and then select "Subscriptions." A subscription cannot be canceled within this app. After cancellation, you may continue to use the paid plan until the end of the period for which you have already paid.'),
+    p('Features obtained through the one-time purchase can be restored with "Restore Purchases" in this app while using the same Apple ID used for the original purchase. Refunds are governed by Apple\'s policies, and we cannot issue refunds directly.'),
+    p("Prices and plan details may change. Any changes will be announced in advance in the app or on this page."),
+    "    <h3>3. Intellectual Property</h3>",
+    p("Intellectual property rights in this app and its content belong to the licensor. Unauthorized copying, distribution, or publication is prohibited."),
+    "    <h3>4. Disclaimer</h3>",
+    p('This app is provided "as is" without warranties of fitness for a particular purpose, accuracy, or completeness. We are not liable for any damages arising from use of this app.'),
+    "    <h3>5. Restrictions on Use</h3>",
+    p("If a user violates these terms, we reserve the right to restrict or prohibit use of this app."),
+    "    <h3>6. Changes to These Terms</h3>",
+    p("These terms may be changed as needed. Updated terms take effect when notified in the app or on this page."),
+]
+
+
 def english_legal_block(app: dict) -> str:
     """英語のプライバシー／利用規約。現状は Simple Photo Book（photo-book）のみ。
 
-    日本語節（収集情報・広告・第三者提供・改定／ライセンス・知的財産・免責・利用制限）を
+    日本語節（収集情報・広告・第三者提供・改定／ライセンス・課金・知的財産・免責・利用制限）を
     忠実に英訳する。アプリ名は "Simple Photo Book"。
     """
     if app.get("id") != "photo-book":
@@ -279,17 +335,7 @@ def english_legal_block(app: dict) -> str:
         "    <h3>4. Changes to This Privacy Policy</h3>",
         p("We may update this policy as needed. Material changes will be announced in the app or on this page."),
         '    <h2 id="terms-en">Terms of Use</h2>',
-        "    <h3>1. License</h3>",
-        p("This app is provided free of charge for personal use. Commercial use, resale, or modification is not permitted."),
-        "    <h3>2. Intellectual Property</h3>",
-        p("Intellectual property rights in this app and its content belong to the licensor. Unauthorized copying, distribution, or publication is prohibited."),
-        "    <h3>3. Disclaimer</h3>",
-        p('This app is provided "as is" without warranties of fitness for a particular purpose, accuracy, or completeness. We are not liable for any damages arising from use of this app.'),
-        "    <h3>4. Restrictions on Use</h3>",
-        p("If a user violates these terms, we reserve the right to restrict or prohibit use of this app."),
-        "    <h3>5. Changes to These Terms</h3>",
-        p("These terms may be changed as needed. Updated terms take effect when notified in the app or on this page."),
-    ])
+    ] + (ENGLISH_IAP_TERMS if app.get("flags", {}).get("iap") else ENGLISH_TERMS))
 
 
 REDIRECT = """<!DOCTYPE html>

@@ -84,6 +84,7 @@
       ],
       "flags": {
         "ads": true,
+        "iap": true,
         "location": false,
         "photos": true,
         "notifications": false,
