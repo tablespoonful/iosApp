@@ -62,6 +62,15 @@ def audit_privacy(app_id: str, html: str, flags: dict) -> list:
         problems.append("広告ありなのに AdMob の開示が無い")
     if not flags.get("ads") and "AdMob" in html:
         problems.append("広告なしなのに AdMob の開示がある")
+    # INC248: App Privacy に粗い位置・パフォーマンス・診断を申告する SDK 利用アプリは、
+    # 公開ポリシーにも同趣旨が必要（GPS 権限の有無とは別の、IP 由来の推定である点に注意）。
+    uses_sdk_diagnostics = bool(
+        flags.get("ads") or flags.get("analytics") or flags.get("crashReports")
+    )
+    if uses_sdk_diagnostics and "大まかな位置" not in html:
+        problems.append("Firebase/AdMob 利用なのに IP 由来の粗い位置情報の開示が無い")
+    if uses_sdk_diagnostics and "パフォーマンスデータ" not in html:
+        problems.append("Firebase/AdMob 利用なのにパフォーマンス／診断データの開示が無い")
     healthkit_disclosed = f"<h4>{HEALTHKIT_HEADING}</h4>" in html
     if flags.get("healthKit") and not healthkit_disclosed:
         problems.append("HealthKit 利用ありなのに Apple ヘルスケアの開示が無い")
@@ -97,9 +106,11 @@ def privacy_block(name: str, flags: dict) -> str:
     backend = bool(firebase and (accounts or cloud_sync))
 
     if non_personalized_ads:
-        ad_privacy_text = ('本アプリは Google AdMob による広告を表示します。地域に応じてGoogleの同意フォームを表示し、広告は非パーソナライズ設定で配信します。AdMob は広告配信・計測、不正利用防止のためにデバイス識別子、広告データ、操作情報、診断情報などを収集・利用する場合があります。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリはIDFAを利用せず、App Tracking Transparencyによる許可要求や、他社のアプリ・Webサイトを横断するトラッキングを行いません。')
+        ad_privacy_text = ('本アプリは Google AdMob による広告を表示します。地域に応じてGoogleの同意フォームを表示し、広告は非パーソナライズ設定で配信します。AdMob は広告配信・計測・頻度制御、不正利用防止のためにデバイス識別子、広告データ、操作情報、診断情報などを収集・利用する場合があり、通信時の IP アドレスから大まかな位置（国・地域程度）を推定することがあります（正確な位置情報（GPS）は取得しません）。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリはIDFAを利用せず、App Tracking Transparencyによる許可要求や、他社のアプリ・Webサイトを横断するトラッキングを行いません。')
     else:
-        ad_privacy_text = None
+        # 標準（トラッキングなし）広告。デバイス識別子は配信・頻度制御に使うことがある一方、
+        # ATT は出さず他社横断のトラッキングには使わない（App Privacy の「紐付けなし・トラッキングなし」と整合）。
+        ad_privacy_text = ('本アプリは Google AdMob による広告を表示します。AdMob は広告配信・計測・頻度制御のために広告識別子（IDFA 等）やデバイス識別子などの情報を収集・利用し、Google と共有する場合があります。また、通信時の IP アドレスから大まかな位置（国・地域程度）を推定し、広告配信に利用することがあります（正確な位置情報（GPS）は取得しません）。詳細は <a href="https://policies.google.com/technologies/ads">Google の広告に関するポリシー</a> をご確認ください。本アプリは App Tracking Transparency による許可要求を行わず、ユーザーを横断的にトラッキングしません（広告はトラッキングを伴わない形で配信されます）。')
 
     out = [p(f"「{esc(name)}」は、以下の方針に基づきユーザーの情報を取り扱います。"), "    <h3>1. 収集・処理する情報</h3>"]
     if backend:
@@ -110,6 +121,20 @@ def privacy_block(name: str, flags: dict) -> str:
             collected += ("、" if collected else "") + "予定、変更依頼、操作履歴"
         out.append(p(f"アプリの提供に必要な情報として、{collected}を収集し、Googleのクラウドサービス上に保存します。"))
         out.append(p("GoogleまたはAppleによるサインインを選択した場合、各認証サービスからアカウント識別情報を受け取ります。"))
+        if ads or analytics or crash_reports:
+            sdk_bits = []
+            if firebase:
+                sdk_bits.append("Google Firebase")
+            if ads:
+                sdk_bits.append("Google AdMob")
+            if len(sdk_bits) == 2:
+                who = f"{sdk_bits[0]} および {sdk_bits[1]}"
+            elif sdk_bits:
+                who = sdk_bits[0]
+            else:
+                who = "外部サービス"
+            out.append(p(f'{who}は、通信時の IP アドレスから大まかな位置（国・地域程度）を推定することがあります。正確な位置情報（GPS）は取得しません。'))
+            out.append(p('アプリの動作状況に関するパフォーマンスデータおよび診断データ（起動時間、クラッシュ時の状態など）を収集することがあります。これらは広告配信・分析・不具合の解析に使用し、ユーザー個人の特定や、他社のデータとの紐付け（トラッキング）には使用しません。'))
     else:
         if analytics or crash_reports:
             local_storage = "端末内に保存されます" if healthkit else "端末内にのみ保存されます"
@@ -136,8 +161,20 @@ def privacy_block(name: str, flags: dict) -> str:
             else:
                 sent_data = "、".join(parts[:-1]) + "、および" + parts[-1]
             out.append(p(f'品質改善のため、{service}を利用し、{sent_data}を Google のサーバーに送信します。これらの情報は個人を特定するものではなく、ユーザーの個人情報に紐付けられず、トラッキング目的にも使用しません。詳細は <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>をご確認ください。'))
+            # App Privacy（粗い位置・パフォーマンス・その他の診断）と公開ポリシーの整合（INC248）。
+            # GPS 権限（flags.location）とは別で、SDK が IP から国・地域程度を推定するケースを開示する。
+            sdk_names = [service]
+            if ads:
+                sdk_names.append("Google AdMob")
+            who = f"{sdk_names[0]} および {sdk_names[1]}" if len(sdk_names) == 2 else sdk_names[0]
+            out.append(p(f'{who}は、通信時の IP アドレスから大まかな位置（国・地域程度）を推定することがあります。正確な位置情報（GPS）は取得しません。'))
+            out.append(p('アプリの動作状況に関するパフォーマンスデータおよび診断データ（起動時間、クラッシュ時の状態など）を収集することがあります。これらは広告配信・分析・不具合の解析に使用し、ユーザー個人の特定や、他社のデータとの紐付け（トラッキング）には使用しません。'))
         else:
             out.append(p("本アプリの主要な機能は端末内で完結し、当方はユーザーの個人情報をサーバーに収集・保存しません。"))
+            if ads:
+                # Analytics/Crashlytics 無しで広告だけのアプリでも、AdMob 由来の粗い位置・診断を開示する。
+                out.append(p('Google AdMob は、通信時の IP アドレスから大まかな位置（国・地域程度）を推定することがあります。正確な位置情報（GPS）は取得しません。'))
+                out.append(p('アプリの動作状況に関するパフォーマンスデータおよび診断データ（起動時間、クラッシュ時の状態など）を収集することがあります。これらは広告配信・分析・不具合の解析に使用し、ユーザー個人の特定や、他社のデータとの紐付け（トラッキング）には使用しません。'))
     if healthkit:
         health_data_types = flags.get("healthDataTypes") or "本アプリが対応する健康データ"
         out.append(f"    <h4>{HEALTHKIT_HEADING}</h4>")
