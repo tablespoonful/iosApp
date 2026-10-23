@@ -810,14 +810,15 @@
         "photos": false,
         "notifications": false,
         "externalApi": false,
-        "firebase": false,
+        "firebase": true,
         "accounts": false,
         "cloudSync": false,
-        "crashReports": false,
-        "analytics": false,
-        "remoteConfig": false,
+        "crashReports": true,
+        "analytics": true,
+        "remoteConfig": true,
         "localHistory": false,
-        "cameraPurpose": "カメラへのアクセスは、あなたが撮影した紙の表を端末内で認識するためだけに使用します。撮影した画像は認識に使ったあと保存せず、外部へ送信しません。認識結果は、あなたが CSV や .xlsx で書き出して共有するときにのみ端末の外に出ます。"
+        "cameraPurpose": "カメラへのアクセスは、あなたが撮影した紙の表を端末内で認識するためだけに使用します。撮影した画像は認識に使ったあと保存せず、外部へ送信しません。認識結果は、あなたが CSV や .xlsx で書き出して共有するときにのみ端末の外に出ます。",
+        "revenueCat": true
       }
     }
   ]

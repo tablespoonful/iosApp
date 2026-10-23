@@ -204,6 +204,11 @@ def privacy_block(name: str, flags: dict) -> str:
         maps_sent = flags.get("mapsSentData") or "検索条件や現在地"
         out.append(p(f'{maps_purpose}のため、{maps_sent}を Apple のマップサービス（MapKit / 逆ジオコーディング）に送信します。これらは Apple により提供され、<a href="https://www.apple.com/legal/privacy/">Apple のプライバシーポリシー</a>が適用されます。{history_text}また、当方は位置情報を保存・収集しません。'))
 
+    # 課金に RevenueCat を使うアプリは、購入情報の処理委託先として明記する（flags.revenueCat）。
+    revenue_cat = flags.get("revenueCat")
+    if revenue_cat:
+        out.append(p('有料プランの購入状態を確認するため、App Store の購入情報（取引の記録）を RevenueCat, Inc. のサービスで処理します。氏名やメールアドレスは送信せず、アプリごとに割り当てられる匿名の ID で管理します。詳細は <a href="https://www.revenuecat.com/privacy/">RevenueCat のプライバシーポリシー</a>をご確認ください。'))
+
     if backend:
         # 見出し番号は ads の有無で1つずれるため動的に採番する
         n = 2
@@ -241,6 +246,8 @@ def privacy_block(name: str, flags: dict) -> str:
         _google_role = "広告事業者・分析サービスの提供元（Google）" if analytics else "広告事業者（Google）"
         third_body = f"上記の{_google_role}および地図サービスの提供元（Apple）を除き、当方がユーザーの個人情報を第三者へ提供することはありません。" if external \
             else f"上記の{_google_role}を除き、当方がユーザーの個人情報を第三者へ提供することはありません。"
+        if revenue_cat:
+            third_body = third_body.replace("を除き、", "および購入情報の処理委託先（RevenueCat）を除き、", 1)
         change_h = "    <h3>4. プライバシーポリシーの変更</h3>"
     else:
         third = "    <h3>2. 第三者への提供</h3>"
