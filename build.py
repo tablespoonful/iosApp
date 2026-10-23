@@ -297,6 +297,11 @@ IAP_TERMS = "\n".join([
 def terms_block(flags: dict) -> str:
     if not flags.get("workCollaboration"):
         if flags.get("iap"):
+            # 業務利用を想定した有料プランのアプリ（flags.commercialUse）は、商業目的の利用を禁じない。
+            if flags.get("commercialUse"):
+                return IAP_TERMS.replace(
+                    "商業目的での使用、再販、改変はできません。",
+                    "業務での利用もできます。本アプリの再販、改変はできません。", 1)
             return IAP_TERMS
         return TERMS
     return "\n".join([
