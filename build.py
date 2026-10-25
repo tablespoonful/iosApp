@@ -402,18 +402,34 @@ REDIRECT = """<!DOCTYPE html>
 </html>
 """
 
+def legal_sections(app: dict) -> tuple[str, str, str]:
+    """PhotoBookだけは、共有・購入・削除の実態に合わせた個別の文面を使う。"""
+    if app.get("id") != "photo-book":
+        return (privacy_block(app["name"], app.get("flags", {})),
+                terms_block(app.get("flags", {})), english_legal_block(app))
+    sections = app.get("legal")
+    required = ("privacyJa", "termsJa", "english")
+    if not isinstance(sections, dict) or set(sections) != set(required):
+        raise ValueError("photo-book: apps.json の個別文面3項目が必要です")
+    for key in required:
+        if (not isinstance(sections[key], list) or not sections[key] or
+                not all(isinstance(line, str) for line in sections[key])):
+            raise ValueError(f"photo-book: 個別文面 {key} は空でない文字列配列にしてください")
+    return tuple("\n".join(sections[key]) for key in required)
+
+
 # --- render per-app pages + legacy redirects ---
 privacy_problems = []
 for app in data["apps"]:
-    english = english_legal_block(app)
+    privacy, terms, english = legal_sections(app)
     page = (template
             .replace("{{NAME}}", esc(app["name"]))
             .replace("{{LANG_SWITCH}}", lang_switch_block(bool(english)))
             .replace("{{UPDATED}}", esc(app.get("updated", site["updated"])))
             .replace("{{SUMMARY}}", esc(app["summary"]))
             .replace("{{FEATURES}}", features_block(app.get("features", [])))
-            .replace("{{PRIVACY}}", privacy_block(app["name"], app.get("flags", {})))
-            .replace("{{TERMS}}", terms_block(app.get("flags", {})))
+            .replace("{{PRIVACY}}", privacy)
+            .replace("{{TERMS}}", terms)
             .replace("{{ENGLISH_LEGAL}}", english)
             .replace("{{SUPPORT_URL}}", esc(site["supportFormUrl"]))
             .replace("{{YEAR}}", str(site["year"]))
